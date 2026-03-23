@@ -1,36 +1,101 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Next.js Starter Template
+
+A minimal, free-tier-friendly starter template built with Next.js 15 (App Router), TypeScript, Neon Postgres, Drizzle ORM, Auth.js v5 (GitHub OAuth), Tailwind CSS 4, and shadcn/ui. Designed to be used as a GitHub Template Repository for rapid prototyping with zero per-project costs.
 
 ## Getting Started
 
-First, run the development server:
+1. **Clone or use as template**
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+   Click "Use this template" on GitHub, or clone directly:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+   ```bash
+   git clone <your-repo-url>
+   cd starter-template
+   npm install
+   ```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+2. **Set up environment variables**
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+   ```bash
+   cp .env.example .env
+   ```
 
-## Learn More
+   Fill in the required values (see `.env.example` for details).
 
-To learn more about Next.js, take a look at the following resources:
+3. **Create a GitHub OAuth App**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   Go to [GitHub Developer Settings](https://github.com/settings/developers) and create a new OAuth App:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+   - **Homepage URL**: `http://localhost:3000`
+   - **Authorization callback URL**: `http://localhost:3000/api/auth/callback/github`
 
-## Deploy on Vercel
+   Copy the Client ID and Client Secret into your `.env` file.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+4. **Set up the database**
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+   Create a free Neon database at [neon.tech](https://neon.tech) and copy the pooled connection string into `DATABASE_URL`.
+
+   Push the schema to your database:
+
+   ```bash
+   npm run db:push
+   ```
+
+5. **Run the dev server**
+
+   ```bash
+   npm run dev
+   ```
+
+   Open [http://localhost:3000](http://localhost:3000).
+
+## Scripts
+
+| Script           | Description                                      |
+| ---------------- | ------------------------------------------------ |
+| `npm run dev`    | Start development server with Turbopack          |
+| `npm run build`  | Production build                                 |
+| `npm run db:generate` | Generate Drizzle migration files            |
+| `npm run db:migrate`  | Run migrations                              |
+| `npm run db:push`     | Push schema directly (quick prototyping)    |
+| `npm run db:studio`   | Open Drizzle Studio                         |
+
+## Adding More Auth Providers
+
+The template ships with **GitHub OAuth** as the only active provider. Two additional providers are included in the code but commented out with setup instructions:
+
+### Google OAuth
+
+See the comments in `src/lib/auth.ts` for step-by-step instructions. You will need a Google Cloud project with OAuth credentials. Note that in "Testing" mode only manually-added test users (max 100) can sign in. Public access requires Google verification.
+
+### Resend Magic Link (Passwordless Email)
+
+See the comments in `src/lib/auth.ts`. You will need a [Resend](https://resend.com) account (free tier: 3,000 emails/month shared across all projects). Install the `resend` package and set `AUTH_RESEND_KEY` in your `.env`.
+
+After enabling a provider in `auth.ts`, also uncomment the corresponding UI button/form in `src/components/sign-in.tsx`.
+
+## Deploy to Vercel
+
+1. Push your repo to GitHub
+2. Import it into [Vercel](https://vercel.com)
+3. Set these environment variables in the Vercel dashboard:
+   - `DATABASE_URL`
+   - `AUTH_SECRET`
+   - `AUTH_GITHUB_ID`
+   - `AUTH_GITHUB_SECRET`
+   - (Plus any optional provider keys you have enabled)
+4. Update the GitHub OAuth App callback URL to your production domain
+
+## Documentation Links
+
+- [Next.js](https://nextjs.org/docs)
+- [Neon](https://neon.tech/docs)
+- [Drizzle ORM](https://orm.drizzle.team/docs/overview)
+- [Auth.js](https://authjs.dev)
+- [shadcn/ui](https://ui.shadcn.com)
+- [Tailwind CSS](https://tailwindcss.com/docs)
+- [Resend](https://resend.com/docs)
+
+---
+
+This template is meant to be used as a **GitHub Template Repository**. Click "Use this template" to create a new repository with this starter as the base.
