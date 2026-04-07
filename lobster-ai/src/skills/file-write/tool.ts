@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { writeFile, mkdir } from 'node:fs/promises';
 import { dirname } from 'node:path';
-import { createTool } from './create-tool.js';
+import { createTool } from '../create-tool.js';
 
 export const tool = createTool({
   name: 'file_write',

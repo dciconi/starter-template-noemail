@@ -4,15 +4,15 @@ import { Hono } from 'hono';
 import { serveStatic } from '@hono/node-server/serve-static';
 import { config } from './config.js';
 import { initRunner, runAgent } from './agent/agent-runner.js';
-import { loadSkills } from './skills/index.js';
+import { loadSkills } from './skills/loader.js';
 import { createWSHandlers } from './channels/web/web-channel.js';
 import { startTelegramBot } from './channels/telegram/telegram-channel.js';
 import chalk from 'chalk';
 
 async function main() {
-  // Load skills and initialize agent
+  // Load skills and initialize agent (async — reads SOUL.md)
   const skills = await loadSkills();
-  initRunner(skills);
+  await initRunner(skills);
   console.log(chalk.gray(`   Skills: ${skills.map((s) => s.name).join(', ')}`));
 
   const app = new Hono();
@@ -23,6 +23,9 @@ async function main() {
 
   // Health check
   app.get('/health', (c) => c.json({ status: 'ok', model: config.MAIN_MODEL }));
+
+  // A2A Agent Card (discovery endpoint)
+  app.get('/.well-known/agent.json', serveStatic({ path: './.well-known/agent.json' }));
 
   // REST chat endpoint (for testing)
   app.post('/chat', async (c) => {

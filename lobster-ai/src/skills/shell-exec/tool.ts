@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { execSync } from 'node:child_process';
-import { createTool } from './create-tool.js';
+import { createTool } from '../create-tool.js';
 
 const DENIED_COMMANDS = ['rm -rf /', 'mkfs', 'dd if=', ':(){', 'fork bomb'];
 

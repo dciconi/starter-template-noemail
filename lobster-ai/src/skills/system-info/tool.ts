@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import os from 'node:os';
-import { createTool } from './create-tool.js';
+import { createTool } from '../create-tool.js';
 
 export const tool = createTool({
   name: 'system_info',

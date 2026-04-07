@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { readFile } from 'node:fs/promises';
-import { createTool } from './create-tool.js';
+import { createTool } from '../create-tool.js';
 
 export const tool = createTool({
   name: 'file_read',

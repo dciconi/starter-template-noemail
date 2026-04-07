@@ -7,8 +7,8 @@ const APP_NAME = 'lobster_ai';
 let runner: InMemoryRunner;
 
 /** Initialize the agent runner with skills. Must be called once at startup. */
-export function initRunner(skills: FunctionTool[]) {
-  const agent = createRootAgent(skills);
+export async function initRunner(skills: FunctionTool[], memories: string[] = []) {
+  const agent = await createRootAgent(skills, memories);
   runner = new InMemoryRunner({
     agent,
     appName: APP_NAME,
