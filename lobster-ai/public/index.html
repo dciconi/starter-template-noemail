@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LobsterAI</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div id="app">
+    <header>
+      <h1>🦞 LobsterAI</h1>
+      <span id="status" class="status status--connecting">connecting...</span>
+    </header>
+
+    <main id="messages"></main>
+
+    <footer>
+      <form id="chat-form">
+        <button type="button" id="mic-btn" class="icon-btn" title="Voice input" style="display:none;">🎤</button>
+        <textarea id="input" placeholder="Type a message..." rows="1" autofocus></textarea>
+        <button type="submit" id="send-btn" class="icon-btn" title="Send">➤</button>
+      </form>
+    </footer>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
