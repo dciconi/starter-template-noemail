@@ -77,6 +77,14 @@ def validate_rut(raw: str) -> TaxIdResult:
 _NIT_PRIMES = [3, 7, 13, 17, 19, 23, 29, 37, 41, 43, 47, 53, 59, 67, 71]
 
 
+def nit_check_digit(body: str) -> int:
+    """Compute the DIAN check digit for a NIT body (digits only, no DV)."""
+    body = _digits(body)
+    total = sum(int(d) * p for d, p in zip(reversed(body), _NIT_PRIMES))
+    rem = total % 11
+    return rem if rem <= 1 else 11 - rem
+
+
 def validate_nit(raw: str) -> TaxIdResult:
     cleaned = _digits(raw)
     if len(cleaned) < 4 or len(cleaned) > 16:

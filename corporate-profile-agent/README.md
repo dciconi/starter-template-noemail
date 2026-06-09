@@ -50,13 +50,29 @@ Outputs land in `data/<tax_id>/`:
 
 Supersociedades publishes filed financials as open data. Generate profiles
 for N Colombian companies, then diff the extracted figures against the
-regulator's structured dataset:
+regulator's structured dataset.
+
+A curated 20-company seed list lives in `eval/colombia_sample.csv` — all
+Supersociedades-supervised (so each has a filed income statement to compare
+against), gathered programmatically from the "10,000 largest companies"
+directory and cross-checked to have a revenue row in the income-statement
+dataset (`prwj-nzxa`). Run the whole batch:
 
 ```bash
-python eval/diff_against_sirem.py data/
+python eval/run_batch.py                 # profiles every company, then diffs
+python eval/diff_against_sirem.py data/  # diff only, over already-generated profiles
 ```
 
-Prints per-company match/mismatch and aggregate field-level accuracy.
+Both print per-company match/mismatch and aggregate revenue-field accuracy
+within a 5% tolerance, with automatic thousands/millions scale detection so a
+"match at ×1000" is distinguishable from a real unit error.
+
+> The diff requires `ANTHROPIC_API_KEY` for the extraction stage that
+> produces the figures being checked. The deterministic stages (intake,
+> tier-1 acquisition) and the ground-truth fetch run without a key, so
+> `run_batch.py` is also a self-check of the seed list and harness: it
+> validates all 20 NIT checksums and confirms live ground-truth resolution
+> before any LLM call.
 
 ## Tests
 

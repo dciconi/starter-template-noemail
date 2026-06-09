@@ -71,3 +71,15 @@ def test_rfc_invalid_date():
 
 def test_unsupported_country():
     assert not tax_ids.validate("US", "12-3456789").valid
+
+
+def test_nit_check_digit_roundtrips():
+    # Computing the DV for a body must produce an ID that validates.
+    for body in ("900531210", "890900943", "899999068", "860069804"):
+        dv = tax_ids.nit_check_digit(body)
+        assert tax_ids.validate("CO", f"{body}-{dv}").valid
+
+
+def test_nit_check_digit_known_value():
+    # Ecopetrol's NIT body 899999068 has check digit 1.
+    assert tax_ids.nit_check_digit("899999068") == 1
